@@ -14,15 +14,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { count } from 'console';
 
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
-
-
-
+// interface DataType {
+//   key: React.Key;
+//   name: string;
+//   age: number;
+//   address: string;
+// }
 
 interface Column {
   id: string;
@@ -33,11 +30,18 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'nik', label: 'NIK', minWidth: 200 },
+  { id: 'staff_id', label: 'NIK', minWidth: 200 },
   { id: 'name', label: 'Name', minWidth: 100 },
   {
     id: 'gender',
     label: 'Gender',
+    minWidth: 170,
+    
+
+  },
+  {
+    id: 'card_number',
+    label: 'Bank Card No.',
     minWidth: 170,
 
   },
@@ -50,6 +54,12 @@ const columns: readonly Column[] = [
   {
     id: 'family_card_number',
     label: 'Family Card No.',
+    minWidth: 170,
+
+  },
+  {
+    id: 'marriage_status',
+    label: 'Marriage Status',
     minWidth: 170,
 
   },
@@ -108,7 +118,7 @@ const columns: readonly Column[] = [
 
   },
   {
-    id: 'deparment',
+    id: 'department_name',
     label: 'Department',
     minWidth: 170,
 
@@ -119,7 +129,7 @@ const columns: readonly Column[] = [
     minWidth: 100,
   },
   {
-    id: 'salary_Rp',
+    id: 'basic_salary',
     label: 'Salary Rp.',
     minWidth: 100,
   },
@@ -151,59 +161,95 @@ const columns: readonly Column[] = [
 ];
 
 
-function createData(
-  // id staff
-  nik: string,
-  name: number,
-  gender: string,
-  bank_account_no: null,
-  family_card_number: null,
-  mother_name: string,
-  // no value
-  place_of_birth: string,
-  home_address_1: null,
-  nation_card_id: null,
-  updated_at: Date,
-  first_contact: Date,
-  second_contact: string,
-  end_contact: string,
-  deparment: string,
-  employee_type: string,
-  salary_Rp: string,
-  position: string,
-  ot_paid: string,
-  meal_paid: number,
-  grading: string,
-) {
-  return {
+// function createData(
+//   // id staff
+//   nik: string,
+//   name: number,
+//   gender: string,
+//   bank_account_no: null,
+//   family_card_number: null,
+//   mother_name: string,
+//   // no value
+//   place_of_birth: string,
+//   home_address_1: null,
+//   nation_card_id: null,
+//   updated_at: Date,
+//   first_contact: Date,
+//   second_contact: string,
+//   end_contact: string,
+//   deparment: string,
+//   employee_type: string,
+//   salary_Rp: string,
+//   position: string,
+//   ot_paid: string,
+//   meal_paid: number,
+//   grading: string,
+// ) {
+//   return {
 
-    nik,
-    name,
-    gender,
-    bank_account_no,
-    family_card_number,
-    mother_name,
-    place_of_birth,
-    home_address_1,
-    nation_card_id,
-    updated_at,
-    first_contact,
-    second_contact,
-    end_contact,
-    deparment,
-    employee_type,
-    salary_Rp,
-    position,
-    ot_paid,
-    meal_paid,
-    grading
-  };
-}
+//     nik,
+//     name,
+//     gender,
+//     bank_account_no,
+//     family_card_number,
+//     mother_name,
+//     place_of_birth,
+//     home_address_1,
+//     nation_card_id,
+//     updated_at,
+//     first_contact,
+//     second_contact,
+//     end_contact,
+//     deparment,
+//     employee_type,
+//     salary_Rp,
+//     position,
+//     ot_paid,
+//     meal_paid,
+//     grading
+//   };
+// }
 
 // let rows: any = [];
 
+interface EnhancedTableProps {
+  numSelected: number;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  rowCount: number;
+}
 
-const TableEmployee = () => {
+function EnhancedTableHead(props: EnhancedTableProps) {
+  const { onSelectAllClick, numSelected, rowCount} = props;
+ 
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            // indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            
+          />
+        </TableCell>
+        {columns.map((column) => (
+          <TableCell
+            key={column.id}
+            align={column.align}
+            style={{ minWidth: column.minWidth }}
+          >
+            {column.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+
+const TableEmployee = ({setCheckedTable}: any) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = React.useState(0);
@@ -212,35 +258,38 @@ const TableEmployee = () => {
   // const tableDatas = useSelector((state: any) => state.employee.datas)
   const [tableDatas, setTableDatas] = React.useState([]);
   const [rows, setRows] = React.useState([]);
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event: unknown, newPage: number) => {
+  //   setPage(newPage);
+  // };
+  const [selected, setSelected] = React.useState<readonly string[]>([]);
 
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
-  const start = () => {
-    setLoading(true);
+  // const start = () => {
+  //   setLoading(true);
 
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
+  //   setTimeout(() => {
+  //     setSelectedRowKeys([]);
+  //     setLoading(false);
+  //   }, 1000);
+  // };
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
+
+  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+  //   setSelectedRowKeys(newSelectedRowKeys);
+  // };
+
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: onSelectChange,
+  // };
+  // const hasSelected = selectedRowKeys.length > 0;
   let [counts, setCounts] = React.useState<number>()
   
   // const [allData, setAllData] = React.useState<any>([])
@@ -253,32 +302,34 @@ const TableEmployee = () => {
             page: pageCurrent,
           }
         });
-        const datas = res.data.data.data;
-        let newRows: any = [];
-        datas?.forEach((item: any) => {
-          newRows.push(createData(
-                item.staff_id,
-                item.name,
-                item.gender,
-                item.bank_account_no,
-                item.family_card_number,
-                item.mother_name,
-                item.place_of_birth,
-                item.home_address_1,
-                item.nation_card_id,
-                item.updated_at,
-                item.contract_start_date,
-                item.second_contact,
-                item.end_contact,
-                item.deparment,
-                item.type,
-                item.basic_salary,
-                item.position_name,
-                item.ot_paid,
-                item.meal_allowance_paid,
-                item.grading));
-           });
-          setRows(newRows);    
+       
+        setTableDatas(res.data.data.data)
+        // let newRows: any = [];
+        // datas?.forEach((item: any) => {
+        //   newRows.push(createData(
+        //         item.staff_id,
+        //         item.name,
+        //         item.gender,
+        //         item.bank_account_no,
+        //         item.family_card_number,
+        //         item.mother_name,
+        //         item.place_of_birth,
+        //         item.home_address_1,
+        //         item.nation_card_id,
+        //         item.updated_at,
+        //         item.contract_start_date,
+        //         item.second_contact,
+        //         item.end_contact,
+        //         item.deparment,
+        //         item.type,
+        //         item.basic_salary,
+        //         item.position_name,
+        //         item.ot_paid,
+        //         item.meal_allowance_paid,
+        //         item.grading));
+        //    });
+        //   // setRows(newRows);   
+        //   setRows(res.data.data.data) 
           setCounts(res.data.data.total)
       // dispatch(getDataTable(res.data.data.data));
       
@@ -289,34 +340,45 @@ const TableEmployee = () => {
     }
   }
   
-//   tableDatas?.forEach((item: any) => {
-//     rows.push(createData(
-//       item.staff_id,
-//       item.name,
-//       item.gender,
-//       item.bank_account_no,
-//       item.family_card_number,
-//       item.mother_name,
-//       item.place_of_birth,
-//       item.home_address_1,
-//       item.nation_card_id,
-//       item.updated_at,
-//       item.contract_start_date,
-//       item.second_contact,
-//       item.end_contact,
-//       item.deparment,
-//       item.type,
-//       item.basic_salary,
-//       item.position_name,
-//       item.ot_paid,
-//       item.meal_allowance_paid,
-//       item.grading));
-//  });
+
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelected = tableDatas.map((row: any) => row.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
 
   React.useEffect(()=>{
     getData();
     
   }, [pageCurrent]);
+
+  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+
+  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected: readonly string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelected(newSelected);
+  };
+  console.log(selected)
+  setCheckedTable(selected);
 
   return (
 
@@ -327,50 +389,36 @@ const TableEmployee = () => {
       </div>
       <TableContainer sx={{ maxHeight: 440, width: '100%' }}>
 
-        <Table sx={{ minWidth: 750 }}
-
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                // indeterminate={numSelected > 0 && numSelected < rowCount}
-                // checked={rowCount > 0 && numSelected === rowCount}
-                // onChange={onSelectAllClick}
-                // inputProps={{
-                //   'aria-label': 'select all desserts',
-                // }}
-                />
-              </TableCell>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+        <Table sx={{ minWidth: 750 }}>
+          <EnhancedTableHead
+              numSelected={selected.length}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={tableDatas.length}
+            />
           <TableBody>
-            {rows?.map((row: any) => {
+            {tableDatas?.map((row: any) => {
+              const isItemSelected = isSelected(row.id);
+             
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow hover role="checkbox" 
+              
+                  tabIndex={-1} 
+                  key={row.id}
+                  onClick={(event) => handleClick(event, row.id)}
+                  selected={isItemSelected}
+                  aria-checked={isItemSelected}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
-                      // indeterminate={numSelected > 0 && numSelected < rowCount}
-                      // checked={rowCount > 0 && numSelected === rowCount}
-                      // onChange={onSelectAllClick}
-                      // inputProps={{
-                      //   'aria-label': 'select all desserts',
-                      // }}
+                        checked={isItemSelected}
+                    
                       />
                     </TableCell>
                     {columns.map((column) => {  
                       const value = row[column.id];
+                      if (value === 1) return <TableCell>Nam</TableCell>
+                      if (value === 0) return <TableCell>Nữ</TableCell>
                       return (
                         <TableCell key={column.id} >
                           {column.format && typeof value === 'number'
@@ -387,7 +435,7 @@ const TableEmployee = () => {
       </TableContainer>
           <PaginationEpl counts={counts} setPageCurrent={setPageCurrent}/>
 
-      {/* <PaginationEpl counts={data.length} /> */}
+    
     </div>
 
   )

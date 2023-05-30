@@ -77,7 +77,7 @@ const ForgotPass = () =>{
                             Confirm & Send OTP
                         </Button>
                     <div style={{color: 'blue', paddingTop: '20px'}}>
-                    <Link to = '/login' >Back to sign in</Link>
+                    <Link to = '/' >Back to sign in</Link>
 
                     </div>
                     </Form>
