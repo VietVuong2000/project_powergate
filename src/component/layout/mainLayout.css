@@ -1,0 +1,63 @@
+.iconSlider{
+  
+   
+
+    color: rgb(215, 219, 223);
+    flex-shrink: 0;
+    display: inline-flex;
+    margin-right: 10px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgb(241, 243, 245);
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center
+}
+
+.css-ivnu1y-MuiPaper-root-MuiAppBar-root{
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .h4-sidebar{
+    margin: 0px;
+    font-family: "SVN-Sofia Pro Medium", "Public Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.375;
+    font-size: 24px !important;
+    letter-spacing: -0.03em;
+    color: rgb(17, 24, 28);
+  }
+  .css-1nxmd3h-MuiListItem-root{
+    margin-top: 2%;
+  }
+  .style-h4-General{
+    margin: 0px;
+      font-family: "SVN-Sofia Pro Medium", "Public Sans", sans-serif;
+      font-weight: 500;
+      line-height: 1.375;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      color: rgb(0, 106, 220);
+      text-transform: capitalize;
+  }
+  .style-h4-General{
+    width: 90%;
+    margin: auto;
+    text-align: start;
+  }
+  .style-h4-advance{
+    width: 90%;
+    margin: auto;
+    text-align: start;
+  
+  }
+  
+.img-header{
+    margin-left: 6px;
+      margin-right: 16px;
+      width: 36px;
+      height: 36px;
+  }

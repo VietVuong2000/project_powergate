@@ -1,0 +1,13 @@
+.MuiTypography-root.MuiTypography-body1.css-1pnmrwp-MuiTypography-root{
+    margin: 0px;
+      line-height: 1.5;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      font-family: "SVN-Sofia Pro Regular", "Public Sans", sans-serif;
+      font-weight: 400;
+      color: rgb(0, 106, 220);
+  }
+
+  .label-add-salary{
+    min-width: 100% ;
+  }

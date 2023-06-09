@@ -2,47 +2,47 @@ import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import LoginPage from './component/pages/loginpage';
-import ForgotPass from './component/pages/forgotPass';
-import ManegerPage from './component/pages/managerPage';
-import Content1 from './component/mainContent';
+import LoginPage from './component/login/loginpage';
+import ForgotPass from './component/forgetPass/forgotPass';
 
-import PaginationEpl from './component/tables/pagination';
-import FormAddNew from './component/mainAddNew';
-import ContentAddNew from './component/contentAddNew1';
-import PageAddEmlpoyee from './component/pages/pageAddEmployee';
-import TableEMployeeManager from './component/TableEmpoyeeManager';
+import LayoutEmployee from './component/layout/LayoutEmployee';
+import CreateEmployee from './component/createEmployee';
+import MainAddNew from './component/mainAddNew';
+import MainContent from './component/employees/mainContent';
+
 
 function App() {
+  const [selectId, setSelectId] = React.useState()
   return (
     <div className="App">
       <Routes>
-        <Route path='/managerpage' element={<ManegerPage />}/>
-        <Route path='/' element={<LoginPage />}/>
+        <Route path='/managerpage' element={
+        <LayoutEmployee>
 
+          <MainContent />
+        </LayoutEmployee>
+        }/>
         <Route path='/forgotPass' element ={<ForgotPass />}/>
-        <Route path='/addemployee' element={<PageAddEmlpoyee />}/>
-        <Route path = '/tableemployeemanager' element ={<TableEMployeeManager />} />
-      
+        
+        <Route path='/' element={<LoginPage />}/>
+        <Route path='/employee/create-or-update' element={
+          <LayoutEmployee>
 
-    
+            <CreateEmployee />
+          </LayoutEmployee>
+        }/>
+
+        <Route path='/employee/create-or-update/:id' element={
+          <LayoutEmployee>
+            
+            <MainAddNew />
+          </LayoutEmployee>
+        }/>
+        {/* <Route path = '/tableemployeemanager' element ={<TableEMployeeManager />} /> */}
+        {/* <Route path='/employee/create-or-update' element={<PageAddEmlpoyee />}/> */}
+      
       </Routes>
-      {/* <ManegerPage>
-        <Content1 />
-      </ManegerPage> */}
-      
-      {/* <Button type="primary">Primary Button</Button>
-      <DatePicker /> */}
-      {/* <LoginPage /> */}
-      {/* <ForgotPass /> */}
-      {/* <Content1 /> */}
-      {/* <PaginationEpl /> */}
-      {/* <FormAddNew /> */}
-      {/* <ContentAddNew /> */}
-      {/* <PageAddEmlpoyee /> */}
-     
 
-    
     </div>
   );
 }

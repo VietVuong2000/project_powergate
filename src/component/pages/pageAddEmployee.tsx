@@ -1,6 +1,7 @@
 import React from "react";
 import LayoutEmployee from "../layout/LayoutEmployee";
 import MainAddNew from "../mainAddNew";
+import { useSelector } from "react-redux";
 
 
 
@@ -8,6 +9,7 @@ import MainAddNew from "../mainAddNew";
 
 
 const PageAddEmlpoyee =() =>{
+
   return(
     <LayoutEmployee>
       <MainAddNew />

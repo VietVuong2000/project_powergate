@@ -1,0 +1,76 @@
+.MuiGrid-root.MuiGrid-container.css-10mzr36-MuiGrid-root{
+  
+    flex-flow: column wrap;
+    display: flex;
+    max-width: 500px;
+    width: 100%;
+    padding-bottom: 20px;
+    gap: 10px;
+    padding-left: 10px;
+  
+  }
+  
+.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6.css-1osj8n2-MuiGrid-root{
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+}
+.Input-add-contact{
+  width: 70%;
+}
+.btn-upload-file{
+  width: 40%;
+  margin-top: 10px !important;
+  display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0px;
+    margin: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    font-weight: 400;
+    line-height: 1.71429;
+    text-transform: capitalize !important;
+    font-family: "SVN-Sofia Pro Regular", "Public Sans", sans-serif;
+    padding: 8px 11px;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgb(0, 145, 255);
+
+    border-radius: 6px;
+    height: 48px;
+    font-size: 16px;
+    background-color: rgb(237, 246, 255) !important;
+    min-width: 195px;
+    border: 1px dashed !important;
+}
+
+.all-btn-contact-add{
+  display: flex;
+  flex-direction: column;
+  gap: 10px !important;
+}
+
+.content-add-contact-form{
+  display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(223, 227, 230);
+   
+    box-shadow: rgb(241, 243, 245) 0px 5px 20px;
+    border-radius: 12px;
+    background-color: rgb(251, 252, 253);
+}
+.datepicker_contact{
+  width: 100% !important;
+}
+.ant-upload.ant-upload-select{
+  width: 100%;
+  text-align: start;
+}

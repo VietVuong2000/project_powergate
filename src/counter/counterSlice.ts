@@ -2,28 +2,32 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
 const initialState : any = {
-  datas: []
+  datas: {},
+  datanumber : {}
 
 };
 
 export const counterSlice = createSlice({
-  name: 'employee',
+  name: 'dataemployee',
   initialState,
   reducers: {
    
-    getDataTable: (state, action) => {
-      state.datas = action.payload
+    getdatas: (state, action) => {
+      state.datas += action.payload
     },
-
-    getDataChangePage: (state, action) => {
-      state.datas = action.payload
+    getdatanumber: (state, action) => {
+      state.datanumber = action.payload
     }
+
+    // getDataChangePage: (state, action) => {
+    //   state.datas = action.payload
+    // }/
 
    
   }
 })
 
 // Action creators are generated for each case reducer function
-export const {  getDataTable, getDataChangePage } = counterSlice.actions
+export const {  getdatas, getdatanumber} = counterSlice.actions
 
 export default counterSlice.reducer

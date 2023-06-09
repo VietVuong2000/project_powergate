@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {
     
     Cascader,
@@ -27,6 +28,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import api from '../../../api';
+import Chip from '@mui/material/Chip';
+import "../other/main.css"
+
+import { Upload } from 'antd';
+
 
 const currencies = [
     {
@@ -46,12 +53,67 @@ const currencies = [
       label: '¥',
     },
   ];
-const FormOrther = () =>{
+ 
+const FormOrther = (dataDetail: any) =>{
     const [placement, SetPlacement] = React.useState<DatePickerProps['placement']>('topLeft');
+
+    const [gradeValue, setGradeValue] = useState<any>([])
+    const gradeOther = async () =>{
+        try {
+            const res = await api.get("/grade")
+            console.log(res.data.data)
+            setGradeValue(res.data.data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+    useEffect(() => {
+        gradeOther()
+    }, [])
+
+    const [benefitValue, setBenefitValue] = useState<any>([])
+    const benefitOther = async () =>{
+        try {
+            const res = await api.get("/benefit")
+            setBenefitValue(res.data.data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+    useEffect(() => {
+        benefitOther()
+    }, [])
+
+
+    const [chip, setChip] = useState<any>([])
+    const handleGrade = async (id: any) =>{
+        try {
+            const res = await api.get(`/grade/${id}`)
+
+            setChip(res.data.data.benefits)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
+    console.log(gradeValue)
 
     const placementChange = (e: RadioChangeEvent) => {
       SetPlacement(e.target.value);
     };
+
+    const handleUploadOther = (file: any) =>{
+        console.log(file)
+    }
+
+    
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -61,8 +123,8 @@ const FormOrther = () =>{
         color: theme.palette.text.secondary,
       }));
     return(
-        <div>
-            <div style={{backgroundColor: 'white', width: '100%', margin: 'auto', display: 'flex', justifyContent:'space-between'}}>
+        <div style={{paddingTop: '20px'}}>
+            <div style={{backgroundColor: 'white', display: 'flex', justifyContent:'space-between', paddingTop: '10px'}}>
                     <div style={{marginLeft: '5%'}}>
                         <h5>Contract Information</h5>
                     </div>
@@ -73,85 +135,100 @@ const FormOrther = () =>{
                 </div>
                 <Divider style={{width: '98%', margin:'auto' }}/>
                 <Box>
-                <Stack spacing={2}>
+                <Stack spacing={1}>
                     <Item>
                         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                            <Grid item xs={6}>
-                                <Typography className='label-add-other'>
+
+                        <Grid container>
+                        <Grid item xs={4}>
+                            <Typography className='label-add-other'>
                                 Grade
-                                
-                                
-                                </Typography>
-
-                                <Box
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                        <Box
                                         component="form"
                                         sx={{
-                                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                                            '& .MuiTextField-root': { m: 1, width: '100%' },
                                         }}
                                         noValidate
                                         autoComplete="off"
                                     >
      
-      
+                                    <div style={{display: "flex", flexDirection: "column"}}>
+
                                     <TextField
                                         id="outlined-select-currency"
                                         select
                                         // helperText="Please select your currency"
                                         variant="outlined"
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                            <MenuItem value="">NAN</MenuItem>
+                                        {gradeValue.map((option: any) => (
+                                            <MenuItem key={option.id} value={option.id} onClick={() => handleGrade(option.id)}>
+                                            {option.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
+                                    <div style={{display: 'flex'}}>
+
+                                        {chip.map((option: any) => (
+
+                                            <Chip label={`${option.name}`}  />
+                                        ))}
+                                    </div>
+                                    </div>
         
                                 </Box>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography className='label-add-other'>
-                                Benefit
-                                
-                                
-                                </Typography>
+                        </Grid>
+                    </Grid>
 
-                                <Box
-                                        component="form"
-                                        sx={{
-                                            '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                        }}
-                                        noValidate
-                                        autoComplete="off"
-                                    >
-     
-      
+                    <Grid container>
+                        <Grid item xs={4}>
+                        <Typography className='label-add-other'>
+                                Benefit
+                         </Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                         <Box
+                            component="form"
+                            sx={{
+                                '& .MuiTextField-root': { m: 1, width: '100%' },
+                            }}
+                             noValidate
+                            autoComplete="off"
+                            >
+
                                     <TextField
                                         id="outlined-select-currency"
                                         select
                                         // helperText="Please select your currency"
                                         variant="outlined"
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                        {benefitValue.map((option: any) => (
+                                            <MenuItem key={option.id} value={option.id}>
+                                            {option.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
         
                                 </Box>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <Typography className='label-add-other'>
+                       
+                        </Grid>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={4}>
+                        <Typography className='label-add-other'>
                                 Benefit
-                                
-                                
-                                </Typography>
+                        </Typography>
 
-                                <Box
+                        </Grid>
+                        <Grid item xs={6}>
+                        <Box
                                         component="form"
                                         sx={{
-                                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                                            '& .MuiTextField-root': { m: 1, width: '100%' },
+                                            
                                         }}
                                         noValidate
                                         autoComplete="off"
@@ -164,30 +241,31 @@ const FormOrther = () =>{
                                         variant="outlined"
                                         multiline
                                         rows={4}
+                                        style={{backgroundColor: "#f1f3f5"}}
                                         >
                                         
                                     </TextField>
         
                                 </Box>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <Typography className='label-add-other'>
-                                Grade
-                                
-                                
-                                </Typography>
-
-                                <Box
+                        </Grid>
+                    </Grid>                    
+                            
+                            <Grid container>
+                                    <Grid item xs={4}>
+                                    <Typography className='label-add-other'>
+                                    HRM User Account
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                    <Box
                                         component="form"
                                         sx={{
-                                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                                            '& .MuiTextField-root': { m: 1, width: '100%' },
                                         }}
                                         noValidate
                                         autoComplete="off"
                                     >
-     
-      
+
                                     <TextField
                                         id="outlined-select-currency"
                                         select
@@ -195,19 +273,17 @@ const FormOrther = () =>{
                                         variant="outlined"
                                         disabled
                                         >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                    
+                                            <MenuItem  value={1}>
+                                            1
                                             </MenuItem>
-                                        ))}
+                                      
                                     </TextField>
         
                                 </Box>
-                            </Grid>
-                            
+                                    </Grid>
+                                </Grid>
 
-                            
-                            
                         </Grid>
                                 <Box>
                                     <Box>
@@ -221,12 +297,15 @@ const FormOrther = () =>{
                                             </Grid>
                                             <Grid item xs={8}>
                                                 <Item>
+                                                <Upload onChange={handleUploadOther}>
                                                 <Button variant="outlined" className='btn-upload-file' >
                                                     <span>
                                                     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-fill-all" >
                                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M7.81825 1.18191C7.64251 1.00618 7.35759 1.00618 7.18185 1.18191L4.18185 4.18191C4.00611 4.35765 4.00611 4.64257 4.18185 4.81831C4.35759 4.99404 4.64251 4.99404 4.81825 4.81831L7.05005 2.58651V9.49999C7.05005 9.74852 7.25152 9.94999 7.50005 9.94999C7.74858 9.94999 7.95005 9.74852 7.95005 9.49999V2.58651L10.1819 4.81831C10.3576 4.99404 10.6425 4.99404 10.8182 4.81831C10.994 4.64257 10.994 4.35765 10.8182 4.18191L7.81825 1.18191ZM2.5 10C2.77614 10 3 10.2239 3 10.5V12C3 12.5539 3.44565 13 3.99635 13H11.0012C11.5529 13 12 12.5528 12 12V10.5C12 10.2239 12.2239 10 12.5 10C12.7761 10 13 10.2239 13 10.5V12C13 13.1041 12.1062 14 11.0012 14H3.99635C2.89019 14 2 13.103 2 12V10.5C2 10.2239 2.22386 10 2.5 10Z" fill="black"></path></svg>
                                                     </span>
                                                     Upload</Button>
+                                                </Upload>
+                                                    
                                                 </Item>
                                             </Grid>
                                         </Item>

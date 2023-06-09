@@ -11,8 +11,11 @@ import InputLabel from "@mui/material/InputLabel";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { useState, useEffect } from 'react';
+import api from '../../../api';
+import "../employeeDetail/main.css"
 
-const FormEmloyeeDetail = () =>{
+const FormEmloyeeDetail = (dataDetail: any) =>{
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,11 +29,57 @@ const FormEmloyeeDetail = () =>{
 
       const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value as string);
-        
+        console.log(age)
       };
+
+      const [department, setDepartment] = useState([])
+      const getDepartment = async () =>{
+        try {
+            const res = await api.get("/department")
+            setDepartment(res.data.data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+    useEffect(() => {
+        getDepartment()
+    }, [])
+
+   
+
+    const [position, setPosition] = useState([])
+    const getPosition = async () =>{
+        try {
+            const res = await api.get("/position")
+            setPosition(res.data.data)
+            
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+    useEffect(() => {
+        getPosition()
+    }, [])
+
+
+    const[valueCheckbox, setValueCheckbox] = useState<number>();
+    const [isChecked, setIsChecked] = useState(true);
+    const handleCheckboxChange = (e: any) => {
+        setIsChecked(e.target.checked);
+        console.log(e.target.checked)
+     };
+    useEffect(()=>  {return isChecked ? setValueCheckbox(1) : setValueCheckbox(0)}, [isChecked])
+
+   
+   
+      
     return(
-        <div>
-            <div style={{backgroundColor: 'white', width: '100%', margin: 'auto', display: 'flex', justifyContent:'space-between'}}>
+        <div style={{paddingTop: '20px'}}>
+            <div style={{backgroundColor: 'white',  display: 'flex', justifyContent:'space-between', paddingTop:'10px'}}>
                     <div style={{marginLeft: '5%'}}>
                         <h5>Employee Detail</h5>
                     </div>
@@ -69,9 +118,12 @@ const FormEmloyeeDetail = () =>{
                                                 sx={{backgroundColor: 'rgb(241, 243, 245)'}}
                                              
                                                 >
-                                                <MenuItem value={10}>Ten</MenuItem>
-                                                <MenuItem value={20}>Twenty</MenuItem>
-                                                <MenuItem value={30}>Thirty</MenuItem>
+                                                    <MenuItem value="">NAN</MenuItem>
+                                             {department.map((option: any) => (
+                                                <MenuItem key={option.id} value={option.name}>
+                                                    {option.name}
+                                                </MenuItem>
+                                                ))}   
                                                 </Select>
                                             </FormControl>
                                         </Box>
@@ -106,9 +158,13 @@ const FormEmloyeeDetail = () =>{
                                                 sx={{backgroundColor: 'rgb(241, 243, 245)'}}
                                              
                                                 >
-                                                <MenuItem value={10}>Ten</MenuItem>
-                                                <MenuItem value={20}>Twenty</MenuItem>
-                                                <MenuItem value={30}>Thirty</MenuItem>
+                                                <MenuItem value="">NAN</MenuItem>
+                                            {position.map((option: any)=>(
+
+                                                <MenuItem key={option.id} value={option.name}>{option.name}</MenuItem>
+                                            ))}                                                
+                                           
+                                               
                                                 </Select>
                                             </FormControl>
                                         </Box>
@@ -121,8 +177,10 @@ const FormEmloyeeDetail = () =>{
                                 <Item style={{width: '90%', margin: 'auto'}}>
 
                                     <FormGroup >
-                                        <FormControlLabel control={<Checkbox  defaultChecked color="success" />} label="Entitled OT" style={{color: 'black '}}/>
-                                        <FormControlLabel control={<Checkbox  defaultChecked color="success" />} label="Meal Allowance Paid" style={{color: 'black '}}/>
+                                        <FormControlLabel control={
+                                           
+                                        <Checkbox  checked={isChecked} color="success" />} label="Entitled OT" style={{color: 'black '}} onChange={handleCheckboxChange}/>
+                                        <FormControlLabel control={<Checkbox  color="success" />} label="Meal Allowance Paid" style={{color: 'black '}}/>
                                         <FormControlLabel disabled control={<Checkbox />} label="DAttendance Allowance Paidisabled" />
                                         <FormControlLabel disabled control={<Checkbox />} label="Attendance Allowance Paid" />
                                     </FormGroup>

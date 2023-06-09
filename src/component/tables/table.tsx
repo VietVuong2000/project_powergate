@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PaginationEpl from './pagination';
+import PaginationEpl from './pagination/pagination';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,9 +9,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Checkbox } from '@mui/material';
 import api from '../../api';
-import { getDataTable } from '../../counter/counterSlice';
+// import { getDataTable } from '../../counter/counterSlice';
 import { useSelector, useDispatch } from 'react-redux'
-import { count } from 'console';
+import { getdatas } from '../../counter/counterSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 // interface DataType {
@@ -25,17 +26,163 @@ interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: 'right';
+  align?: 'right' | 'left' | 'center';
   format?: (value: number) => string;
 }
 
 const columns: readonly Column[] = [
-  { id: 'staff_id', label: 'NIK', minWidth: 200 },
-  { id: 'name', label: 'Name', minWidth: 100 },
+  { id: 'staff_id', label: 'NIK', minWidth: 200, align: 'center' },
+  { id: 'name', label: 'Name', minWidth: 100, align: 'center' },
   {
     id: 'gender',
     label: 'Gender',
     minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'card_number',
+    label: 'Bank Card No.',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'bank_account_no',
+    label: 'Bank Account No.',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'family_card_number',
+    label: 'Family Card No.',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'marriage_status',
+    label: 'Marriage Status',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'mother_name',
+    label: 'Mother Name',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'pob',
+    label: 'Place of birth',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'dob',
+    label: 'Date of birth',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'home_address_1',
+    label: 'Home Address',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'home_address_2',
+    label: '',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'nc_id',
+    label: 'National Card ID No.',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'contract_start_date',
+    label: 'Date Start',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'first_contact',
+    label: 'First Contract',
+    minWidth: 170,
+
+    align: 'center'
+  },
+  {
+    id: 'second_contact',
+    label: 'Second Contract',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'end_contact',
+    label: 'End Contract',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'department_name',
+    label: 'Department',
+    minWidth: 170,
+    align: 'center'
+  },
+  {
+    id: 'employee_type',
+    label: 'Employee Type',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'basic_salary',
+    label: 'Salary Rp.',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'position',
+    label: 'Position',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'ot_paid',
+    label: 'O/T Paid',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'meal_paid',
+    label: 'Meal paid',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'meal_allowance',
+    label: 'Meal Rp.',
+    minWidth: 100,
+    align: 'center'
+  },
+  {
+    id: 'grading',
+    label: 'Grading',
+    minWidth: 100,
+    align: 'center'
+  },
+];
+
+
+const columnsHeader: readonly Column[] = [
+  { id: 'staff_id', label: 'NIK', minWidth: 200,align: 'center' },
+  { id: 'name', label: 'Name', minWidth: 100, align: 'center' },
+  {
+    id: 'gender',
+    label: 'Gender',
+    minWidth: 170,
+    align: 'center'
     
 
   },
@@ -43,174 +190,147 @@ const columns: readonly Column[] = [
     id: 'card_number',
     label: 'Bank Card No.',
     minWidth: 170,
+    align: 'center',
 
   },
   {
     id: 'bank_account_no',
     label: 'Bank Account No.',
     minWidth: 170,
+    align: 'center',
 
   },
   {
     id: 'family_card_number',
     label: 'Family Card No.',
     minWidth: 170,
+    align: 'center',
 
   },
   {
     id: 'marriage_status',
     label: 'Marriage Status',
     minWidth: 170,
+    align: 'center',
 
   },
   {
     id: 'mother_name',
     label: 'Mother Name',
     minWidth: 170,
+    align: 'center',
 
   },
   {
-    id: 'place_of_birth',
+    id: 'pob',
     label: 'Place of birth',
     minWidth: 170,
+    align: 'center',
 
   },
   {
-    id: 'date_of_birth',
+    id: 'dob',
     label: 'Date of birth',
     minWidth: 170,
+    align: 'center',
 
   },
   {
-    id: 'home_address_1',
+    id: 'home_address',
+    
     label: 'Home Address',
-    minWidth: 170,
+    minWidth: 300,
+    align: 'center',
+    
+   
 
   },
+  
   {
-    id: 'nation_ card_id',
+    id: 'nc_id',
     label: 'National Card ID No.',
     minWidth: 170,
 
   },
   {
-    id: 'updated_at',
+    id: 'contract_start_date',
     label: 'Date Start',
     minWidth: 170,
+     align: 'center'
 
   },
   {
     id: 'first_contact',
     label: 'First Contract',
     minWidth: 170,
+     align: 'center'
 
   },
   {
     id: 'second_contact',
     label: 'Second Contract',
     minWidth: 170,
+     align: 'center'
 
   },
   {
     id: 'end_contact',
     label: 'End Contract',
     minWidth: 170,
+     align: 'center'
 
   },
   {
     id: 'department_name',
     label: 'Department',
     minWidth: 170,
+     align: 'center'
 
   },
   {
     id: 'employee_type',
     label: 'Employee Type',
     minWidth: 100,
+     align: 'center'
   },
   {
     id: 'basic_salary',
     label: 'Salary Rp.',
     minWidth: 100,
+     align: 'center'
   },
   {
     id: 'position',
     label: 'Position',
     minWidth: 100,
+     align: 'center'
   },
   {
     id: 'ot_paid',
     label: 'O/T Paid',
     minWidth: 100,
+     align: 'center'
   },
   {
     id: 'meal_paid',
     label: 'Meal paid',
     minWidth: 100,
+     align: 'center'
   },
   {
-    id: 'meal_rp',
+    id: 'meal_allowance',
     label: 'Meal Rp.',
     minWidth: 100,
+     align: 'center'
   },
   {
     id: 'grading',
     label: 'Grading',
     minWidth: 100,
+     align: 'center'
   },
 ];
 
-
-// function createData(
-//   // id staff
-//   nik: string,
-//   name: number,
-//   gender: string,
-//   bank_account_no: null,
-//   family_card_number: null,
-//   mother_name: string,
-//   // no value
-//   place_of_birth: string,
-//   home_address_1: null,
-//   nation_card_id: null,
-//   updated_at: Date,
-//   first_contact: Date,
-//   second_contact: string,
-//   end_contact: string,
-//   deparment: string,
-//   employee_type: string,
-//   salary_Rp: string,
-//   position: string,
-//   ot_paid: string,
-//   meal_paid: number,
-//   grading: string,
-// ) {
-//   return {
-
-//     nik,
-//     name,
-//     gender,
-//     bank_account_no,
-//     family_card_number,
-//     mother_name,
-//     place_of_birth,
-//     home_address_1,
-//     nation_card_id,
-//     updated_at,
-//     first_contact,
-//     second_contact,
-//     end_contact,
-//     deparment,
-//     employee_type,
-//     salary_Rp,
-//     position,
-//     ot_paid,
-//     meal_paid,
-//     grading
-//   };
-// }
-
-// let rows: any = [];
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -234,11 +354,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             
           />
         </TableCell>
-        {columns.map((column) => (
+        {columnsHeader.map((column) => (
+          
           <TableCell
             key={column.id}
             align={column.align}
             style={{ minWidth: column.minWidth }}
+            colSpan={column.id === 'home_address' ? 2 : 1}
           >
             {column.label}
           </TableCell>
@@ -249,98 +371,21 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 
-const TableEmployee = ({setCheckedTable}: any) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(20);
-  const dispatch = useDispatch();
-  // const tableDatas = useSelector((state: any) => state.employee.datas)
-  const [tableDatas, setTableDatas] = React.useState([]);
-  const [rows, setRows] = React.useState([]);
-  // const handleChangePage = (event: unknown, newPage: number) => {
-  //   setPage(newPage);
-  // };
+const TableEmployee = ({getData, setPageCurrent, counts, tableDatas, setCheckedTable, valueSearch, handleDelete}: any) => {
+ 
+  console.log(1)
   const [selected, setSelected] = React.useState<readonly string[]>([]);
-
-
-  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  // const start = () => {
-  //   setLoading(true);
-
-  //   setTimeout(() => {
-  //     setSelectedRowKeys([]);
-  //     setLoading(false);
-  //   }, 1000);
-  // };
-
-
-
-  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
-
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-  // const hasSelected = selectedRowKeys.length > 0;
-  let [counts, setCounts] = React.useState<number>()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  // const [allData, setAllData] = React.useState<any>([])
-  const [pageCurrent, setPageCurrent] = React.useState<number>()
-  const getData = async  ()=>{
-    try {
 
-       const res = await api.get("/employee",{
-        params: {
-            page: pageCurrent,
-          }
-        });
-       
-        setTableDatas(res.data.data.data)
-        // let newRows: any = [];
-        // datas?.forEach((item: any) => {
-        //   newRows.push(createData(
-        //         item.staff_id,
-        //         item.name,
-        //         item.gender,
-        //         item.bank_account_no,
-        //         item.family_card_number,
-        //         item.mother_name,
-        //         item.place_of_birth,
-        //         item.home_address_1,
-        //         item.nation_card_id,
-        //         item.updated_at,
-        //         item.contract_start_date,
-        //         item.second_contact,
-        //         item.end_contact,
-        //         item.deparment,
-        //         item.type,
-        //         item.basic_salary,
-        //         item.position_name,
-        //         item.ot_paid,
-        //         item.meal_allowance_paid,
-        //         item.grading));
-        //    });
-        //   // setRows(newRows);   
-        //   setRows(res.data.data.data) 
-          setCounts(res.data.data.total)
-      // dispatch(getDataTable(res.data.data.data));
-      
-       
+  const handleShowRow = async (id: any) => {
+    console.log(id)
+    navigate(`/employee/create-or-update/${id}`);
 
-    }catch (e) {
-      console.log(e);
-    }
+   
   }
   
-
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -350,12 +395,6 @@ const TableEmployee = ({setCheckedTable}: any) => {
     }
     setSelected([]);
   };
-
-  React.useEffect(()=>{
-    getData();
-    
-  }, [pageCurrent]);
-
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
@@ -417,10 +456,11 @@ const TableEmployee = ({setCheckedTable}: any) => {
                     </TableCell>
                     {columns.map((column) => {  
                       const value = row[column.id];
-                      if (value === 1) return <TableCell>Nam</TableCell>
-                      if (value === 0) return <TableCell>Nữ</TableCell>
+                      if (column.id === "gender" && value ===1 ) return <TableCell>Nam</TableCell>
+                      if (column.id === "gender" && value ===0) return <TableCell>Nữ</TableCell>
+                      
                       return (
-                        <TableCell key={column.id} >
+                        <TableCell key={column.id} align={column.align} onDoubleClick={() => handleShowRow(row.id)}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
@@ -435,6 +475,7 @@ const TableEmployee = ({setCheckedTable}: any) => {
       </TableContainer>
           <PaginationEpl counts={counts} setPageCurrent={setPageCurrent}/>
 
+              
     
     </div>
 

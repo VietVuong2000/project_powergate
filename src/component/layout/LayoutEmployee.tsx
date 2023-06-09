@@ -13,6 +13,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import sideBars from "../../helper/sideBars";
 import parse from 'html-react-parser';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from "@mui/material";
+import Avatar from '@mui/material/Avatar';
+import "../layout/mainLayout.css"
+
 
 import { theme } from 'antd';
 
@@ -28,15 +33,31 @@ const LayoutEmployee = (props: any  )=>{
     const {
         token: { colorBgContainer },
       } = theme.useToken();
+
+      const navigate = useNavigate();
+
+      const exitManageEmployee = ()=>{
+       
+        navigate('/managerpage');
+      }
     return(
         <Box sx={{ display: 'flex' }}>
         {/* <CssBaseline /> */}
         <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} >
-          <Toolbar >
-          <img src="http://web-qa.hrm.div4.pgtest.co/static/media/HR_Logo.99af50016f31f424a3f3a2330f173a06.svg" alt="" className="img-header"></img>
-              <Typography variant="h4" noWrap component="div" className='h4-sidebar'>
-              HR Management System
-            </Typography>
+          <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex'}}>
+
+            <img src="http://web-qa.hrm.div4.pgtest.co/static/media/HR_Logo.99af50016f31f424a3f3a2330f173a06.svg" alt="" className="img-header"></img>
+                <Typography variant="h4" noWrap component="div" className='h4-sidebar'>
+                HR Management System
+              </Typography>
+            </div>
+            <div>
+
+              <Button variant="text">
+              <Avatar>V</Avatar>
+              </Button>
+            </div>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -59,7 +80,7 @@ const LayoutEmployee = (props: any  )=>{
                 
 
                 <ListItem key={index} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton onClick={exitManageEmployee}>
                     <ListItemIcon>
                     <div className="iconSlider">
                         {parse(sideBar.icon)}  

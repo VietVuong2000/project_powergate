@@ -1,6 +1,6 @@
 import React from "react";
 import LayoutEmployee from "../layout/LayoutEmployee";
-import MainContent from "../mainContent";
+import MainContent from "../employees/mainContent";
 
 import axios from 'axios';
 import api from "../../api";
@@ -9,7 +9,7 @@ import api from "../../api";
 const ManegerPage = (props:any) =>{
     
     return(
-        <LayoutEmployee>
+        <LayoutEmployee >
           <MainContent />
         </LayoutEmployee>
     )

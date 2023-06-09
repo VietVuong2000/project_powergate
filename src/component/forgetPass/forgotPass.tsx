@@ -3,6 +3,7 @@ import { Form, Input, Button } from "antd";
 import type { FormItemProps } from "antd";
 import {Link} from 'react-router-dom';
 import { useState } from 'react';
+import "../forgetPass/mainFoget.css"
 
 const MyFormItemContext = React.createContext<(string | number)[]>([]);
 

@@ -12,9 +12,10 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
+import { useState, useEffect } from 'react';
+import "../Salary/main.css"
 
-
-const FormSalary =() =>{
+const FormSalary =(dataDetail: any) =>{
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -30,9 +31,25 @@ const FormSalary =() =>{
         setAge(event.target.value as string);
         
       };
+
+      const [basicSalary, setBasicSalary] = useState<Number>()
+      useEffect(() => setBasicSalary(dataDetail.dataDetail.basic_salary), [dataDetail.dataDetail])
+
+      const [auditSalary, setAuditSalary] = useState<Number>()
+      useEffect(() => setAuditSalary(dataDetail.dataDetail.audit_salary), [dataDetail.dataDetail])
+      
+      const [safetyInsurance, setSafetyInsurance] = useState<Number>()
+      useEffect(() => setSafetyInsurance(dataDetail.dataDetail.safety_insurance), [dataDetail.dataDetail])
+
+      const [healthInsurance, setHealthInsurance] = useState<Number>()
+      useEffect(() => setHealthInsurance(dataDetail.dataDetail.health_insurance), [dataDetail.dataDetail])
+
+      const [mealAllowance, setMealAllowance] = useState<Number>()
+      useEffect(() => setMealAllowance(dataDetail.dataDetail.meal_allowance), [dataDetail.dataDetail])
+
     return (
-        <div>
-        <div style={{backgroundColor: 'white', width: '100%', margin: 'auto', display: 'flex', justifyContent:'space-between'}}>
+        <div style={{paddingTop: '20px'}}>
+        <div style={{backgroundColor: 'white', display: 'flex', justifyContent:'space-between', paddingTop: '10px'}}>
                 <div style={{marginLeft: '5%'}}>
                     <h5>Employee Detail</h5>
                 </div>
@@ -72,7 +89,7 @@ const FormSalary =() =>{
                                                 InputProps={{
                                                     startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
                                                   }}
-                                                defaultValue={2200000}
+                                                defaultValue={basicSalary}
                                             >
                                                 
                                                 </TextField>
@@ -110,7 +127,7 @@ const FormSalary =() =>{
                                                     startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
                                                     
                                                   }}
-                                                defaultValue={2200000}
+                                                defaultValue={auditSalary}
                                                 
                                             >
                                                 
@@ -147,7 +164,7 @@ const FormSalary =() =>{
                                                     startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
                                                     
                                                   }}
-                                                defaultValue={66000}
+                                                defaultValue={safetyInsurance}
                                             >
                                                 
                                                 </TextField>
@@ -183,7 +200,7 @@ const FormSalary =() =>{
                                                     startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
                                                     
                                                   }}
-                                                defaultValue={132000}
+                                                defaultValue={healthInsurance}
                                                 
                                             >
                                                 
@@ -220,7 +237,7 @@ const FormSalary =() =>{
                                                     startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
                                                     
                                                   }}
-                                                defaultValue={34000}
+                                                defaultValue={mealAllowance}
                                             >
                                                 
                                                 </TextField>

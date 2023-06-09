@@ -1,0 +1,36 @@
+.forgotPass{
+  
+    display: flex;
+    flex-direction: column;
+    padding-top: 5%;
+    width: 25%;
+    border-radius: 15px;
+    height: 70%;
+  
+  
+  }
+
+  .bodyForget{
+  
+    background-color: white;
+    height: 50%;
+    border-radius: 15px;
+  
+  }
+
+  .styleh4{
+    margin: 0px;
+      font-family: "SVN-Sofia Pro Medium", "Public Sans", sans-serif;
+      font-weight: 500;
+      line-height: 1.375;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      color: rgb(0, 106, 220);
+      margin-right: 40%;
+     
+  }
+  
+  .header-logo-style{
+    display: flex;
+    height: 100%;
+  }
